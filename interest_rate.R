@@ -15,9 +15,19 @@ total_pvc
 #quiz practice
 #how long is r% per year compounded continuously for 13yrs in relation to 13%/yr compounded 1/4yr in 13 yrs
 #(1+0.13/4)^4*13 = e^(r*13)
-loan_multiple <- (1+0.13/4)^(4*13)
-r <- 1/13*log(loan_multiple)
-r
 #present value of 1st 30M paid 1 month: 30*exp(-r*13)
-total <- GeomSn(30*exp(-r/12), exp(-r/12), 12*13)
-total #key is 2268.4722366531
+#total <- GeomSn(30*exp(-r/12), exp(-r/12), 12*13)
+
+convert_cont <- function(annual_rate, k_times_compounded_yr, n){
+  loan_multiple <- (1+annual_rate/k_times_compounded_yr)^(k_times_compounded_yr*n)
+  1/n*log(loan_multiple)
+}
+quiz_practice1 <- convert_cont(0.13,4,13)
+quiz_practice2 <- convert_cont(0.14,4,19)
+find_largest_loan <- function(each_payment, annual_rate, k_times_pay_a_yr, yr){
+  GeomSn(each_payment*exp(-annual_rate/k_times_pay_a_yr), exp(-annual_rate/k_times_pay_a_yr),k_times_pay_a_yr*yr)
+}
+answer_quiz_practice1 <- find_largest_loan(30,quiz_practice1,12,13)
+answer_quiz_practice2 <- find_largest_loan(22,quiz_practice2,12,19)
+answer_quiz_practice1
+answer_quiz_practice2
